@@ -125,8 +125,8 @@ jobs:
           command: | 
             cd backend
             npm install
-            npm install oauth-sign@^0.   npm audit fix --audit-level=critical9.0 
-         
+            # npm install oauth-sign@^0.9.0 
+            npm audit fix --audit-level=critical --force
 
 workflows:
   default:
