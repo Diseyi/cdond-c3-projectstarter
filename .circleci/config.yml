@@ -177,9 +177,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      # Docker image here that supports Ansible
       - image: python:3.10-alpine3.16
-      # - image: amazon/aws-cli
     steps:
       - checkout
       - add_ssh_keys: 
@@ -200,11 +198,11 @@ jobs:
               8A:D2:12:BB:38:53:A2:BC:BF:5B:EC:1A:7E:AC:B0:67
               27:B3:11:45:BB:F2:7D:26:58:1F:9A:CD:94:03:F2:51
               01:CC:9E:80:B9:E4:9C:13:5B:0D:99:7E:81:4C:66:8F'
-     - run:
+      - run:
           name: Install dependencies
           command: |
             apk add --update --no-cache tar gzip ansible aws-cli         
-     - attach_workspace:
+      - attach_workspace:
           at: ~/
       # - restore_cache:
       #     keys: [backend-build]
@@ -214,9 +212,8 @@ jobs:
             cd ~/project/.circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml \
             # --key-file ~/.ssh/id_rsa_ab522568df4c3ad5481855d8f93bdfde -vvvv
-     - destroy-environment:
+      - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}       
-      # Here's where you will add some code to rollback on failure      
 
   run-migrations:
     docker:
@@ -243,7 +240,7 @@ jobs:
             then
               curl https://kvdb.io/JtGAcNy2AkDJRMCq1tNF3J/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
-     - destroy-environment:
+      - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}     
 
   # deploy-frontend:
