@@ -226,8 +226,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt-get update
-            apt -y install awscli
+            sudo apt install -y tar gzip curl
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip -qq awscliv2.zip
+            sudo ./aws/install
       - restore_cache:
           keys: [backend-build]      
       - run:
@@ -235,9 +237,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm audit fix --audit-level=critical --force
-            npm run build
-            npm run migrations >> migrations.txt
+            npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to kvdb
           command: |
@@ -306,13 +306,13 @@ jobs:
   #             D3:97:83:AE:04:76:F1:58:9D:4F:15:A6:98:F1:ED:0D
   #             8A:D2:12:BB:38:53:A2:BC:BF:5B:EC:1A:7E:AC:B0:67
   #             27:B3:11:45:BB:F2:7D:26:58:1F:9A:CD:94:03:F2:51
-  #             01:CC:9E:80:B9:E4:9C:13:5B:0D:99:7E:81:4C:66:8F'     
+  #             01:CC:9E:80:B9:E4:9C:13:5B:0D:99:7E:81:4C:66:8F'
+  #     - attach_workspace:
+  #         at: ~/
   #     - run:
   #         name: Install dependencies
   #         command: |
   #           apk add --update --no-cache tar gzip nodejs npm aws-cli ansible curl
-  #     - attach_workspace:
-  #         at: ~/      
   #     - restore_cache:
   #         keys: [backend-build]       
   #     - run:
