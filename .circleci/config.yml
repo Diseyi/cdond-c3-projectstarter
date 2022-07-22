@@ -267,7 +267,7 @@ jobs:
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
-      - revert-migration:
+      - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}        
  
                     
@@ -306,7 +306,7 @@ jobs:
             --key-file ~/.ssh/id_rsa_ab522568df4c3ad5481855d8f93bdfde -vvvv
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}   
-      - revert-migration:
+      - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}      
 
   # smoke-test:
