@@ -314,15 +314,12 @@ jobs:
           command: |
             apk add --update --no-cache tar gzip nodejs npm aws-cli ansible curl
       - run:
-          name: Get backend url
+          name: Backend smoke test.
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
+            BACKEND_IP=$(aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
             --output text)
-      - run:
-          name: Backend smoke test.
-          command: |
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
