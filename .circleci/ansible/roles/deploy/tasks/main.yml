@@ -4,7 +4,7 @@
     state: directory
 - name: Extract the zipped artifact
   unarchive: 
-    src:  ~/artifact.tar.gz
+    src:  ~/project/artifact.tar.gz
     dest: ~/backend_app
 - name: Install dependencies
   args:
