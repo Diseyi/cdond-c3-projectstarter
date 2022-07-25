@@ -1,14 +1,14 @@
-- name: Creates directory
-  file:
-    path: ~/backend_app
-    state: directory
+# - name: Creates directory
+#   file:
+#     path: ~/backend_app
+#     state: directory
+
 - name: Extract the zipped artifact
   unarchive: 
     src:  ~/project/artifact.tar.gz
-    dest: ~/backend_app
+    dest: ~/
+
 - name: Install dependencies
-  args:
-    chdir: ~/backend_app
   command: |
     npm install
     pm2 stop default
