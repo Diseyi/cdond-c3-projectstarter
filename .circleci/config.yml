@@ -382,7 +382,7 @@ jobs:
           paths:
             - oldworkflowid.txt
 
-cleanup:
+  cleanup:
     docker:
       - image: python:3.9.0-alpine
     steps:
