@@ -277,6 +277,8 @@ jobs:
       - image: python:3.10-alpine3.16
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]
       - add_ssh_keys:
           fingerprints:
             - "79:a5:62:08:57:88:54:16:cb:6e:0f:75:5e:fa:ea:4e"
@@ -285,9 +287,11 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache tar gzip nodejs npm aws-cli ansible curl
-      - restore_cache:
-          keys: [backend-build]
+            apk add --update tar gzip nodejs npm aws-cli ansible rsync openssh bash curl
+            ansible --version
+            curl "https://awscli.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+            unzip awscli-bundle.zip
+            ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
       - run:
           name: Deploy backend
           command: |
@@ -297,9 +301,9 @@ jobs:
             cd ..
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
-            echo "Contents  of the inventory.txt file is $(cat inventory.txt)"
-            cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
+            echo "Contents  of the inventory.txt file is --------"
+            cat ~/project/.circleci/ansible/inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml -vvv
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:

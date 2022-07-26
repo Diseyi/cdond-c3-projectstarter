@@ -1,12 +1,12 @@
-# - name: Creates directory
-#   file:
-#     path: ~/backend_app
-#     state: directory
+- name: Creates directory
+  file:
+    path: ~/backend_app
+    state: directory
 
 - name: Extract the zipped artifact
   unarchive: 
     src:  ~/project/artifact.tar.gz
-    dest: ~/
+    dest: ~/backend_app
 
 - name: Install dependencies
   command: |
